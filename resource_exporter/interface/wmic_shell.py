@@ -7,7 +7,7 @@ class WMICShell(Shell):
         Shell.__init__(self)
 
     def exec(self, command, encoding_type=None):
-        output = Shell.exec(command + "/format:value", encoding_type)
+        output = super().exec(command + "/format:value", encoding_type)
         return self._parse(output)
 
     @classmethod
