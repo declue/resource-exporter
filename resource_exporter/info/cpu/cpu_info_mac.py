@@ -9,7 +9,7 @@ class CPUInfoMac(CPUInfo):
 
     def get(self):
         shell = Shell()
-        result = dict()
+        result = {}
         raw = shell.exec("sysctl -a | grep machdep.cpu.brand_string:")
         result['name'] = raw.replace("\n", "").replace("machdep.cpu.brand_string: ", "").strip()
         result['detail'] = self._get_cpu_benchmark_net_data(result['name'])

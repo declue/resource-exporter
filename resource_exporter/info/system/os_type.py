@@ -1,5 +1,8 @@
-class OSType:
-    Mac = "Mac"
-    Windows = "Windows"
-    Linux = "Linux"
-    Unknown = "Unknown"
+from enum import Enum
+
+
+class OSType(Enum):
+    MAC = "Mac"
+    WINDOWS = "Windows"
+    LINUX = "Linux"
+    UNKNOWN = "Unknown"

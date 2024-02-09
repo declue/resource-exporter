@@ -7,9 +7,10 @@ from resource_exporter.interface.shell import Shell
 
 def create_cpu_info():
     os_type = Shell.get_os()
-    if os_type == OSType.Mac:
+    if os_type == OSType.MAC:
         return CPUInfoMac()
-    elif os_type == OSType.Windows:
+    if os_type == OSType.WINDOWS:
         return CPUInfoWin()
-    elif os_type == OSType.Linux:
+    if os_type == OSType.LINUX:
         return CPUInfoLinux()
+    return None
