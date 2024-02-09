@@ -8,7 +8,7 @@ class CPUInfoLinux(CPUInfo):
         CPUInfo.__init__(self)
 
     def get(self):
-        result = dict()
+        result = {}
         shell = Shell()
         raw = shell.exec("cat /proc/cpuinfo | grep 'name' | uniq")
         raw = raw.split(':')[1].replace('\n', '')

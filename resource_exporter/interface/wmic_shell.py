@@ -1,5 +1,3 @@
-from typing import Any
-
 from resource_exporter.interface.shell import Shell
 
 
@@ -9,12 +7,12 @@ class WMICShell(Shell):
         Shell.__init__(self)
 
     def exec(self, command, encoding_type=None):
-        output = Shell.exec(command + "/format:value", encoding_type)
+        output = super().exec(command + "/format:value", encoding_type)
         return self._parse(output)
 
     @classmethod
     def _parse(cls, output: str):
-        ret: dict[str, list[str] | list[Any]] = dict()
+        ret = {}
         for line in output.split("\n"):
             if len(line) == 0:
                 continue
@@ -25,7 +23,7 @@ class WMICShell(Shell):
                 ret[items[0]] = [items[1].replace("\r", "")]
             else:
                 old = ret[items[0]]
-                if type(old) is str:
+                if isinstance(old, str):
                     ret[items[0]] = [old]
                 ret[items[0]].append(items[1].replace("\r", ""))
         return ret

@@ -1,0 +1,12 @@
+[tool.pytest.ini_options]
+testpaths = [
+    "tests"
+]
+addopts = "-s"
+
+[tool.coverage.run]
+branch = true
+omit = [
+    "tests/*",
+    "venv/*"
+]
