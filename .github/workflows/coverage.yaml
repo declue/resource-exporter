@@ -34,14 +34,7 @@ jobs:
       run: |
         coverage=$(coverage report -m | tail -n 1 | awk '{print $NF}' | sed 's/%//')
         echo "Coverage is ${coverage}%"
-
-        state="success"
-        description="Coverage is above 80%"
-        if (( $(echo "$coverage < 80" | bc -l) )); then
-          state="failure"
-          description="Coverage is below 80%"
+        if [ "$coverage" -lt 80 ]; then
+          echo "Coverage below 80%, failing the check..."
+          exit 1
         fi
-
-        curl -X POST -H "Authorization: token ${GITHUB_TOKEN}" \
-        -d "{\"state\": \"${state}\", \"target_url\": \"${GITHUB_ACTIONS_URL}\", \"description\": \"${description}\", \"context\": \"code-coverage\"}" \
-        https://api.github.com/repos/${GITHUB_REPOSITORY}/statuses/${{ github.sha }}
