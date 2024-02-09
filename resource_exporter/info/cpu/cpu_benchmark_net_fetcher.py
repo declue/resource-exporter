@@ -42,7 +42,7 @@ class CpuBenchmarkNetFetcher:
     def fetch_cpu_info(cpu_name):
         cpu_name = cpu_name.strip().replace(' ', '+')
         url = f'https://www.cpubenchmark.net/cpu.php?cpu={cpu_name}'
-        res = requests.get(url, timeout=1)
+        res = requests.get(url, timeout=5)
         if res.status_code != 200:
             return {}
 
