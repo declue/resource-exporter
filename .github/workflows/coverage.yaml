@@ -30,47 +30,8 @@ jobs:
         python -m pip install coverage
         coverage report -m
 
-    - name: Upload coverage report
-      uses: actions/upload-artifact@v2
-      with:
-        name: coverage-report
-        path: coverage.txt
-
-  coverage-check:
-    name: Coverage Check
-    needs: test
-    runs-on: ubuntu-latest
-    if: always()
-
-    steps:
-    - name: Download coverage report from previous job
-      uses: actions/download-artifact@v2
-      with:
-        name: coverage-report
-
-    - name: Check coverage threshold
-      run: |
-        threshold=80
-        coverage=$(grep "TOTAL" coverage.txt | awk '{print $NF}' | cut -d'%' -f1)
-        if [ "$coverage" -lt "$threshold" ]; then
-          echo "Code coverage is below the threshold ($coverage%). Please increase coverage to at least $threshold%."
-          exit 1
-        else
-          echo "Code coverage is above the threshold ($coverage%)."
-        fi
-
-  merge-block:
-    name: Merge Block
-    needs: coverage-check
-    runs-on: ubuntu-latest
-    if: always()
-
-    steps:
-    - name: Block PR if coverage is below threshold
-      uses: peter-evans/create-pull-request-comment@v3
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        message: "This pull request cannot be merged because code coverage is below the required threshold."
-        check_for_pr_labels: false
-        check_for_open_pr: true
-        check_for_updated_comments: true
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v4.0.1
+      env:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        slug: declue/resource-exporter
