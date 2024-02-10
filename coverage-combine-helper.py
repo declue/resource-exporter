@@ -13,13 +13,17 @@ if __name__ == '__main__':
             print("Error: .coverage file not found in current directory, " + db_path)
             sys.exit(-1)
 
-    if len(sys.argv) == 2:
+    print("db_path: " + db_path)
+
+    if len(sys.argv) == 2 or len(sys.argv) == 3:
         root_path = sys.argv[1]
         current_path = "$PROJECT_ROOT$"
     else:
         root_path = "$PROJECT_ROOT$"
         current_path = os.getcwd()
 
+    print("root_path: " + root_path)
+    print("current_path: " + current_path)
 
     conn = sqlite3.connect(db_path)
     cur = conn.cursor()
@@ -28,10 +32,15 @@ if __name__ == '__main__':
 
     for row in rows:
         original_path = row[1]
-        converted_path = re.sub(r'^[a-zA-Z]:\\', '/', original_path.replace('\\', '/'))
+
+        if '\\' in current_path:
+            converted_path = original_path.replace('/', '\\')
+        else:
+            converted_path = original_path
+
         new_path = converted_path.replace(current_path, root_path)
-        if '\\' in original_path:
-            new_path = new_path.lstrip('/')
+        new_path = new_path.replace('\\', '/')
+        print(f"{row[1]} => {new_path}")
         cur.execute("UPDATE file SET path = ? WHERE id = ?", (new_path, row[0]))
     conn.commit()
     conn.close()
