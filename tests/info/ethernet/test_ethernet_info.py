@@ -1,6 +1,6 @@
 import json
 
-from info.ethernet import create_ethernet_info
+from resource_exporter.info.ethernet import create_ethernet_info
 
 
 def test_get_ethernet_info():
