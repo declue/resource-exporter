@@ -13,10 +13,10 @@ class GPUInfoLinux(GPUInfo):
         shell = Shell()
         raw = shell.exec('sudo lshw -C video | grep product')
         raw = raw.replace('product:', '').strip()
-        gpu_list = list()
-        gpu = dict()
+        gpu_list = []
+        gpu = {}
         if '[' in raw and ']' in raw:
-            short_name = re.findall("\[(.*?)\]", raw)
+            short_name = re.findall(r"\[(.*?)\]", raw)
             if len(short_name) > 0:
                 gpu['short_name'] = short_name[0]
         gpu['name'] = raw

@@ -13,10 +13,10 @@ class GPUInfoMac(GPUInfo):
         shell = Shell()
         raw = json.loads(shell.exec("system_profiler SPDisplaysDataType -json"))
 
-        gpu_list = list()
+        gpu_list = []
         gpu_count = len(raw['SPDisplaysDataType'])
         for i in range(gpu_count):
-            gpu = dict()
+            gpu = {}
             gpu_data = raw['SPDisplaysDataType'][i]
             gpu['name'] = gpu_data['sppci_model']
             if 'spdisplays_vram' not in gpu_data:
