@@ -56,7 +56,7 @@ jobs:
 
       - name: Combine coverage data
         run: |
-          coverage combine coverage-data/*/.coverage
+          coverage combine --append --rcfile=.coveragerc coverage-data/*/.coverage
           coverage report -m
           coverage xml -o combined-coverage.xml
 
