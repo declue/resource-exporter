@@ -7,4 +7,4 @@ xmltodict==0.13.0
 pytest==8.0.0
 pytest-cov==4.1.0
 coverage==7.4.1
-pysqlite3==0.5.2
+sqlean.py==3.45.1
