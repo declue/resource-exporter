@@ -4,34 +4,77 @@ on:
   push:
     branches:
       - main
+
 jobs:
   test:
-    name: Test on Ubuntu 20.04 - Python 3.11 (CI)
-    runs-on: ubuntu-latest
-
+    name: Coverage Check on ${{ matrix.os }} (CI)
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+        python-version: [ 3.11 ]
     steps:
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v5
-      with:
-        python-version: 3.11
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
 
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements-dev.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
 
-    - name: Run tests and generate coverage report
-      run: |
-        python -m pytest --cov=. --cov-report=xml
-        python -m pip install coverage codecov
-        coverage report -m
-        codecov
+      - name: Run tests and generate coverage data
+        run: |
+          python -m pytest --cov=. --cov-report=xml:coverage.xml
 
-    - name: Upload coverage reports to Codecov
-      uses: codecov/codecov-action@v4.0.1
-      env:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        slug: declue/resource-exporter
+      - name: Convert coverage data
+        run: |
+          python coverage_combine_helper.py
+
+      - name: Upload coverage data
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-data-${{ matrix.os }}
+          path: .coverage*
+
+  collect-coverage:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download all coverage data
+        uses: actions/download-artifact@v3
+        with:
+          path: coverage-data
+
+      - name: Install coverage.py
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install coverage codecov
+
+      - name: Convert Coverage data
+        run: |
+          ls coverage-data | xargs -I {} python coverage_combine_helper.py $PWD $PWD/coverage-data/{}/.coverage
+
+
+      - name: Combine coverage data
+        run: |
+          coverage combine --append --rcfile=.coveragerc coverage-data/*/.coverage
+          coverage report -m
+          coverage xml -o combined-coverage.xml
+          codecov
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        env:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: declue/resource-exporter
+
+
+
