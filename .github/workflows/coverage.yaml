@@ -29,7 +29,7 @@ jobs:
 
       - name: Run tests and generate coverage data
         run: |
-          pytest --cov=. --cov-report=term --cov-report=xml:coverage-${{ matrix.os }}.xml --cov-config=.coveragerc
+          python -m pytest --cov=. --cov-report=xml:coverage.xml
 
       - name: Convert coverage data
         run: |
@@ -57,6 +57,11 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install coverage
+
+      - name: Convert Coverage data
+        run: |
+          ls coverage-data | xargs -I {} python coverage-combine-helper.py $PWD $PWD/coverage-data/{}/.coverage
+
 
       - name: Combine coverage data
         run: |
