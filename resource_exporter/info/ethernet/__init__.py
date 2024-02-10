@@ -9,7 +9,8 @@ def create_ethernet_info():
     os_type = Shell.get_os()
     if os_type == OSType.MAC:
         return EthernetInfoMac()
-    elif os_type == OSType.WINDOWS:
+    if os_type == OSType.WINDOWS:
         return EthernetInfoWin()
-    elif os_type == OSType.LINUX:
+    if os_type == OSType.LINUX:
         return EthernetInfoLinux()
+    return None

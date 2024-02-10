@@ -13,7 +13,7 @@ class EthernetInfoMac(EthernetInfo):
         address_list = shell.exec("networksetup -listallhardwareports | grep Address").split('\n')
         type_list = shell.exec("networksetup -listallhardwareports | grep Port").split('\n')
 
-        ethernet_list = list()
+        ethernet_list = []
         idx = 0
         for ethernet in ethernet_list_raw:
             key = ethernet.replace("Device:", "").strip()

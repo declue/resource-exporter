@@ -13,8 +13,8 @@ class EthernetInfoLinux(EthernetInfo):
         shell = Shell()
         raw = shell.exec('lshw -class network -xml')
         json_data = xmltodict.parse(raw)
-        eth_list = list()
-        if type(json_data['list']['node']) is list:
+        eth_list = []
+        if isinstance(json_data['list']['node'], list):
             for i in range(len(json_data['list']['node'])):
                 eth = self._get_node_info(json_data['list']['node'][i])
                 if eth is not None:
@@ -27,7 +27,7 @@ class EthernetInfoLinux(EthernetInfo):
 
     @classmethod
     def _get_node_info(cls, node):
-        eth = dict()
+        eth = {}
         eth['type'] = node['description'] if 'description' in node else ""
         if eth['type'] == 'Ethernet interface':
             eth['type'] = 'ethernet'

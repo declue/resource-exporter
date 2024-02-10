@@ -12,4 +12,4 @@ def convert_file_size(size_bytes, size=1024):
     i = int(math.floor(math.log(size_bytes, size)))
     p = math.pow(size, i)
     s = round(size_bytes / p, 2)
-    return "%s %s" % (s, size_name[i])
+    return f"{s} {size_name[i]}"
