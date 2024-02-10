@@ -8,5 +8,6 @@ addopts = "-s"
 branch = true
 omit = [
     "tests/*",
-    "venv/*"
+    "venv/*",
+    'coverage-combine-helper.py'
 ]
