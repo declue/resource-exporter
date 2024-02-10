@@ -6,7 +6,7 @@ on:
       - main
 jobs:
   test:
-    name: Test on Ubuntu 20.04 - Python 3.11
+    name: Test on Ubuntu 20.04 - Python 3.11 (CI)
     runs-on: ubuntu-latest
 
     steps:
