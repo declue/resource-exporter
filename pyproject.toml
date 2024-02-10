@@ -5,8 +5,8 @@ testpaths = [
 addopts = "-s"
 
 [tool.coverage.run]
-branch = true
 omit = [
     "tests/*",
-    "venv/*"
+    "venv/*",
+    'coverage-combine-helper.py'
 ]
