@@ -18,12 +18,12 @@ class GPUInfoMac(GPUInfo):
         for i in range(gpu_count):
             gpu = {}
             gpu_data = raw['SPDisplaysDataType'][i]
-            gpu['name'] = gpu_data['sppci_model']
+            gpu['name'] = gpu_data.get('sppci_model', "")
             if 'spdisplays_vram' not in gpu_data:
                 continue
-            gpu['memory'] = gpu_data['spdisplays_vram']
-            gpu['manufacturer'] = gpu_data['spdisplays_vendor']
-            gpu['driver'] = gpu_data['spdisplays_rom-revision']
+            gpu['memory'] = gpu_data.get('spdisplays_vram', "")
+            gpu['manufacturer'] = gpu_data.get('spdisplays_vendor', "")
+            gpu['driver'] = gpu_data.get('spdisplays_rom-revision', "")
             gpu['status'] = "OK"
             gpu_list.append(gpu)
         return gpu_list
