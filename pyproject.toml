@@ -8,5 +8,5 @@ addopts = "-s"
 omit = [
     "tests/*",
     "venv/*",
-    'coverage-combine-helper.py'
+    'coverage_combine_helper.py'
 ]
