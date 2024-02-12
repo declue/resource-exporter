@@ -6,7 +6,7 @@ on:
       - main
 jobs:
   build:
-    name: Pylint ${{ python-version }}
+    name: Pylint ${{ matrix.python-version }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
