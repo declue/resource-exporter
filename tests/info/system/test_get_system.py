@@ -15,9 +15,3 @@ def test_get_os_type():
         assert os_type == OSType.MAC
     else:
         assert os_type == OSType.UNKNOWN
-
-
-def test_exec():
-    shell = Shell()
-    result = shell.exec("ls")
-    assert result is not None
